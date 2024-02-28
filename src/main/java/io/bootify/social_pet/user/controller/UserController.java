@@ -12,12 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Optional;
 
 
 @Controller
@@ -43,6 +41,23 @@ public class UserController {
     public String list(final Model model) {
         model.addAttribute("users", userService.findAll());
         return "user/list";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "users/login";
+    }
+    @PostMapping("/login")
+    public String login(@RequestParam("email") String email, @RequestParam("contrasea") String contrasena, Model model) {
+        Optional<User> usuarioOpt = userRepository.findByEmail(email);
+        if(usuarioOpt.isPresent() && usuarioOpt.get().getContraseA().equals(contrasena)) {
+            // Contraseña coincide, manejar el login
+            return "redirect:/users";
+        } else {
+            // Usuario no encontrado o contraseña no coincide, mostrar error
+            model.addAttribute("loginError", "Error en las credenciales");
+            return "users/login";
+        }
     }
 
     @GetMapping("/add")
