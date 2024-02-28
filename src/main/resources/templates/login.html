@@ -10,9 +10,15 @@
         <h1 class="flex-grow-1" th:text="#{login.title}">Login</h1>
     </div>
     <form th:action="@{/login}" method="post" class="w-50 mx-auto">
-        <div th:replace="fragments/formFields :: emailField"></div>
-        <div th:replace="fragments/formFields :: passwordField"></div>
-        <button type="submit" class="btn btn-primary" th:text="#{login.button}">Iniciar sesión</button>
+        <div class="mb-3">
+            <label for="email" class="form-label" th:text="#{login.email.label}">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="contrasea" class="form-label" th:text="#{login.contrasena.label}">Contraseña</label>
+            <input type="password" class="form-control" id="contrasea" name="contrasea" required>
+        </div>
+        <input type="submit" th:value="#{login.button}" class="btn btn-primary mt-4" />
     </form>
 </div>
 </body>

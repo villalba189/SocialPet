@@ -67,7 +67,7 @@ public class UserService {
         userDTO.setEmail(user.getEmail());
         userDTO.setNombre(user.getNombre());
         userDTO.setNumeroTlf(user.getNumeroTlf());
-        userDTO.setContraseA(user.getContraseA());
+        userDTO.setContraseA(user.getContrasea());
         userDTO.setFechaNacimiento(user.getFechaNacimiento());
         userDTO.setFollowerUsers(user.getFollowerUsers().stream()
                 .map(userInt -> userInt.getId())
@@ -79,7 +79,7 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setNombre(userDTO.getNombre());
         user.setNumeroTlf(userDTO.getNumeroTlf());
-        user.setContraseA(userDTO.getContraseA());
+        user.setContrasea(userDTO.getContraseA());
         user.setFechaNacimiento(userDTO.getFechaNacimiento());
         final List<User> followerUsers = userRepository.findAllById(
                 userDTO.getFollowerUsers() == null ? Collections.emptyList() : userDTO.getFollowerUsers());

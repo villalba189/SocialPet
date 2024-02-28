@@ -43,23 +43,6 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "users/login";
-    }
-    @PostMapping("/login")
-    public String login(@RequestParam("email") String email, @RequestParam("contrasea") String contrasena, Model model) {
-        Optional<User> usuarioOpt = userRepository.findByEmail(email);
-        if(usuarioOpt.isPresent() && usuarioOpt.get().getContraseA().equals(contrasena)) {
-            // Contraseña coincide, manejar el login
-            return "redirect:/users";
-        } else {
-            // Usuario no encontrado o contraseña no coincide, mostrar error
-            model.addAttribute("loginError", "Error en las credenciales");
-            return "users/login";
-        }
-    }
-
     @GetMapping("/add")
     public String add(@ModelAttribute("user") final UserDTO userDTO) {
         return "user/add";
