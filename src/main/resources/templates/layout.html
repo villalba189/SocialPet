@@ -24,21 +24,6 @@
                             th:aria-label="#{navigation.toggle}" aria-controls="navbarToggle" aria-expanded="false">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarToggle">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="navbar-item">
-                                <a th:href="@{/}" class="nav-link">[[#{navigation.home}]]</a>
-                            </li>
-                            <li class="navbar-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarEntitiesLink" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">[[#{navigation.entities}]]</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarEntitiesLink">
-                                    <li><a th:href="@{/users}" class="dropdown-item">[[#{user.list.headline}]]</a></li>
-                                    <li><a th:href="@{/photos}" class="dropdown-item">[[#{photo.list.headline}]]</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
                 </nav>
             </div>
         </header>

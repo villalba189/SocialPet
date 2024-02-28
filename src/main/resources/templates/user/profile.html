@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout}">
+<head>
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <h2 th:text="${user.nombre}">User Name</h2>
+        </div>
+        <div class="col-md-8">
+            <h3>Followers</h3>
+            <p th:text="'Total Followers: ' + ${user.getFollowerUsers().size()}">Total Followers: 0</p>
+
+            <h3>Followings</h3>
+            <p th:text="'Total Followings: ' + ${user.getFollowedUsers().size()}">Total Followings: 0</p>
+        </div>
+            <h3>Photos</h3>
+            <div class="row">
+                <div class="col-md-4" th:each="photo : ${user.userPhotos}">
+                    <img th:src="${photo.getPhotoUrl()}" class="img-fluid" alt="User Photo">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

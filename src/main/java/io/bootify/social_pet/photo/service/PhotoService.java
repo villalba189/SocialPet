@@ -70,4 +70,7 @@ public class PhotoService {
         return photo;
     }
 
+    public List<Photo> findPhotosByUserId(Integer userId) {
+        return photoRepository.findPhotosByUserId(userId);
+    }
 }

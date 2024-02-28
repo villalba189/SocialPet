@@ -1,6 +1,8 @@
 package io.bootify.social_pet.util;
 
+import io.bootify.social_pet.user.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -30,4 +32,9 @@ public class WebUtils {
         return messageSource.getMessage(code, args, code, localeResolver.resolveLocale(getRequest()));
     }
 
+    public static void setSession(String usuario, User user) {
+        HttpServletRequest request = getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute(usuario, user);
+    }
 }

@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -101,6 +103,14 @@ public class UserService {
             return referencedWarning;
         }
         return null;
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public Optional<User> findById(Integer userId) {
+        return userRepository.findById(userId);
     }
 
 }

@@ -1,5 +1,7 @@
 package io.bootify.social_pet.user.controller;
 
+import io.bootify.social_pet.photo.domain.Photo;
+import io.bootify.social_pet.photo.service.PhotoService;
 import io.bootify.social_pet.user.domain.User;
 import io.bootify.social_pet.user.model.UserDTO;
 import io.bootify.social_pet.user.repos.UserRepository;
@@ -15,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -25,9 +28,12 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    public UserController(final UserService userService, final UserRepository userRepository) {
+    private final PhotoService photoService ;
+
+    public UserController(final UserService userService, final UserRepository userRepository, final PhotoService photoService) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.photoService = photoService;
     }
 
     @ModelAttribute
@@ -50,7 +56,10 @@ public class UserController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute("user") @Valid final UserDTO userDTO,
-            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        if (userService.findByEmail(userDTO.getEmail()).isPresent()) {
+            bindingResult.rejectValue("email", "user.email.duplicated");
+        }
         if (bindingResult.hasErrors()) {
             return "user/add";
         }
@@ -89,6 +98,32 @@ public class UserController {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("user.delete.success"));
         }
         return "redirect:/users";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        User user = (User) WebUtils.getRequest().getSession().getAttribute("usuario");
+        if (user != null) {
+            model.addAttribute("user", user);
+
+            return "user/profile";
+        } else {
+            // Manejar el caso en que el usuario no se encuentre
+            return "redirect:/users";
+        }
+    }
+
+    @GetMapping("/profile/{id}")
+    public String profile(@PathVariable(name = "id") final Integer id, Model model) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            model.addAttribute("user", user);
+
+            return "user/profile";
+        } else {
+            // Manejar el caso en que el usuario no se encuentre
+            return "redirect:/users";
+        }
     }
 
 }

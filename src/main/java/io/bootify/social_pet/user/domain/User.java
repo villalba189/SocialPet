@@ -1,16 +1,8 @@
 package io.bootify.social_pet.user.domain;
 
 import io.bootify.social_pet.photo.domain.Photo;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -49,7 +41,7 @@ public class User {
     @Column(nullable = false)
     private LocalDate fechaNacimiento;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Follower",
             joinColumns = @JoinColumn(name = "followerUsersId"),
@@ -57,10 +49,10 @@ public class User {
     )
     private Set<User> followerUsers;
 
-    @ManyToMany(mappedBy = "followerUsers")
+    @ManyToMany(mappedBy = "followerUsers",fetch = FetchType.EAGER)
     private Set<User> followedUsers;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Photo> userPhotos;
 
     @CreatedDate
