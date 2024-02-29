@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Controller
@@ -120,6 +121,22 @@ public class UserController {
             model.addAttribute("user", user);
 
             return "user/profile";
+        } else {
+            // Manejar el caso en que el usuario no se encuentre
+            return "redirect:/users";
+        }
+    }
+    @GetMapping("/feed")
+    public String Feed(Model model) {
+        User user = (User) WebUtils.getRequest().getSession().getAttribute("usuario");
+        if (user != null) {
+            Set<User> followedUsers = user.getFollowedUsers();
+
+            model.addAttribute("followedUsers", followedUsers);
+
+
+
+            return "user/feed";
         } else {
             // Manejar el caso en que el usuario no se encuentre
             return "redirect:/users";
