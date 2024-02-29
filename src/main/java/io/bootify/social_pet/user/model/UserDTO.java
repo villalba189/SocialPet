@@ -32,6 +32,6 @@ public class UserDTO {
     @NotNull
     private LocalDate fechaNacimiento;
 
-    private List<Integer> followerUsers;
+
 
 }

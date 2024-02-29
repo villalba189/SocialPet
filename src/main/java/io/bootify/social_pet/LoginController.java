@@ -35,7 +35,8 @@ public class LoginController {
         if(usuarioOpt.isPresent() && usuarioOpt.get().getContrasea().equals(contrasea)) {
             // Contraseña coincide, manejar el login
             WebUtils.setSession("usuario", usuarioOpt.get());
-            return "redirect:/users";
+            WebUtils.setSessionLogueado("usuarioLogueado", true);
+            return "redirect:/users/feed";
         } else {
             // Usuario no encontrado o contraseña no coincide, mostrar error
             model.addAttribute("loginError", "Error en las credenciales");

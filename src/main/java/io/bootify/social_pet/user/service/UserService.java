@@ -71,9 +71,6 @@ public class UserService {
         userDTO.setNumeroTlf(user.getNumeroTlf());
         userDTO.setContraseA(user.getContrasea());
         userDTO.setFechaNacimiento(user.getFechaNacimiento());
-        userDTO.setFollowerUsers(user.getFollowerUsers().stream()
-                .map(userInt -> userInt.getId())
-                .toList());
         return userDTO;
     }
 
@@ -83,12 +80,6 @@ public class UserService {
         user.setNumeroTlf(userDTO.getNumeroTlf());
         user.setContrasea(userDTO.getContraseA());
         user.setFechaNacimiento(userDTO.getFechaNacimiento());
-        final List<User> followerUsers = userRepository.findAllById(
-                userDTO.getFollowerUsers() == null ? Collections.emptyList() : userDTO.getFollowerUsers());
-        if (followerUsers.size() != (userDTO.getFollowerUsers() == null ? 0 : userDTO.getFollowerUsers().size())) {
-            throw new NotFoundException("one of followerUsers not found");
-        }
-        user.setFollowerUsers(new HashSet<>(followerUsers));
         return user;
     }
 
@@ -112,5 +103,41 @@ public class UserService {
     public Optional<User> findById(Integer userId) {
         return userRepository.findById(userId);
     }
+    @Transactional
+    public boolean followUser(Integer currentUserId, Integer userIdToFollow) {
+        Optional<User> currentUserOpt = userRepository.findById(currentUserId);
+        Optional<User> userToFollowOpt = userRepository.findById(userIdToFollow);
 
+        if (currentUserOpt.isPresent() && userToFollowOpt.isPresent()) {
+            User currentUser = currentUserOpt.get();
+            User userToFollow = userToFollowOpt.get();
+
+            // Verificar si ya sigue al usuario
+            if (!currentUser.getFollowedUsers().contains(userToFollow)) {
+                currentUser.getFollowedUsers().add(userToFollow);
+                userToFollow.getFollowerUsers().add(currentUser);
+                userRepository.save(currentUser);
+                userRepository.save(userToFollow);
+                return true;
+            }
+        }
+        return false;
+    }
+    @Transactional
+    public boolean unfollowUser(Integer currentUserId, Integer userIdToUnfollow) {
+        User currentUser = userRepository.findById(currentUserId).orElse(null);
+        User userToUnfollow = userRepository.findById(userIdToUnfollow).orElse(null);
+        if (currentUser != null && userToUnfollow != null) {
+            currentUser.getFollowedUsers().remove(userToUnfollow);
+            userToUnfollow.getFollowerUsers().remove(currentUser);
+            System.out.println("User unfollowed");
+            userRepository.save(currentUser);
+            userRepository.save(userToUnfollow);
+            return true;
+        }
+        return false;
+    }
 }
+
+
+

@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.OffsetDateTime;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -32,10 +34,7 @@ public class Photo {
     @Column(nullable = false)
     private String photoUrl;
 
-    @Column
-    private OffsetDateTime createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -47,4 +46,7 @@ public class Photo {
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
+    public Date getConvertedDateCreated() {
+        return Date.from(this.dateCreated.toInstant());
+    }
 }

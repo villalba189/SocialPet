@@ -15,8 +15,8 @@
             <div th:replace="~{fragments/forms::globalErrors('photo')}" />
             <form th:action="${requestUri}" method="post">
                 <div th:replace="~{fragments/forms::inputRow(object='photo', field='photoUrl', required=true)}" />
-                <div th:replace="~{fragments/forms::inputRow(object='photo', field='createdAt')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='photo', field='user', type='select')}" />
+                <!-- Input oculto para el ID del usuario -->
+                <input type="hidden" name="user" th:value="${currentUser.id}" />
                 <input type="submit" th:value="#{photo.add.headline}" class="btn btn-primary mt-4" />
             </form>
         </div>

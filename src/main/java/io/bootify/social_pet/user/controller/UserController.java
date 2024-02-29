@@ -10,7 +10,10 @@ import io.bootify.social_pet.util.CustomCollectors;
 import io.bootify.social_pet.util.ReferencedWarning;
 import io.bootify.social_pet.util.WebUtils;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -66,7 +69,7 @@ public class UserController {
         }
         userService.create(userDTO);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.create.success"));
-        return "redirect:/users";
+        return "redirect:/login";
     }
 
     @GetMapping("/edit/{id}")
@@ -78,13 +81,17 @@ public class UserController {
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable(name = "id") final Integer id,
             @ModelAttribute("user") @Valid final UserDTO userDTO, final BindingResult bindingResult,
-            final RedirectAttributes redirectAttributes) {
+            final RedirectAttributes redirectAttributes, final Model model) {
         if (bindingResult.hasErrors()) {
             return "user/edit";
         }
         userService.update(id, userDTO);
+        WebUtils.setSession("usuario", userRepository.findById(id).orElse(null));
+
+        model.addAttribute("user", userRepository.findById(id).orElse(null));
+
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.update.success"));
-        return "redirect:/users";
+        return "redirect:/users/profile";
     }
 
     @PostMapping("/delete/{id}")
@@ -110,7 +117,7 @@ public class UserController {
             return "user/profile";
         } else {
             // Manejar el caso en que el usuario no se encuentre
-            return "redirect:/users";
+            return "redirect:/feed";
         }
     }
 
@@ -119,13 +126,25 @@ public class UserController {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             model.addAttribute("user", user);
+            User userSession = (User) WebUtils.getRequest().getSession().getAttribute("usuario");
+            Set<User> followedUsers = userSession.getFollowedUsers();
+
+            // Establecer isFollowing a false como valor predeterminado
+            model.addAttribute("isFollowing", false);
+            for (User followedUser : followedUsers) {
+                if (followedUser.getId().equals(user.getId())) {
+                    model.addAttribute("isFollowing", true);
+                    break; // Romper el bucle cuando se encuentra una coincidencia
+                }
+            }
 
             return "user/profile";
         } else {
             // Manejar el caso en que el usuario no se encuentre
-            return "redirect:/users";
+            return "redirect:/feed";
         }
     }
+
     @GetMapping("/feed")
     public String Feed(Model model) {
         User user = (User) WebUtils.getRequest().getSession().getAttribute("usuario");
@@ -134,13 +153,63 @@ public class UserController {
 
             model.addAttribute("followedUsers", followedUsers);
 
-
-
             return "user/feed";
         } else {
             // Manejar el caso en que el usuario no se encuentre
-            return "redirect:/users";
+            return "redirect:/login";
         }
     }
+
+    @GetMapping("/logout")
+    public String logout() {
+
+        WebUtils.setSessionLogueado("usuarioLogueado", false);
+        WebUtils.getRequest().getSession().invalidate();
+        return "redirect:/login";
+    }
+
+    @GetMapping("/follow/{userIdToFollow}")
+    public String followUser(@PathVariable("userIdToFollow") Integer userIdToFollow) {
+
+        Integer currentUserId = (Integer) WebUtils.getRequest().getSession().getAttribute("id");
+
+        // Llama al servicio para seguir al usuario
+        boolean success = userService.followUser(currentUserId, userIdToFollow);
+        WebUtils.setSession("usuario", userRepository.findById(currentUserId).orElse(null));
+
+        // Redirige según si el proceso fue exitoso o no
+        if (success) {
+            return "redirect:/users/profile/" + userIdToFollow; // Modifica según tu lógica de aplicación
+        } else {
+            return "redirect:/ruta-de-fallo"; // Modifica según tu lógica de aplicación
+        }
+    }
+
+    @GetMapping("/unfollow/{userIdToUnfollow}")
+    public String unfollowUser(@PathVariable("userIdToUnfollow") Integer userIdToUnfollow) {
+
+        Integer currentUserId = (Integer) WebUtils.getRequest().getSession().getAttribute("id");
+
+        // Llama al servicio para dejar de seguir al usuario
+        boolean success = userService.unfollowUser(currentUserId, userIdToUnfollow);
+        WebUtils.setSession("usuario", userRepository.findById(currentUserId).orElse(null));
+
+        // Redirige según si el proceso fue exitoso o no
+        if (success) {
+            return "redirect:/users/profile/" + userIdToUnfollow;
+        } else {
+            return "redirect:/ruta-de-fallo"; // Modifica según tu lógica de aplicación
+        }
+    }
+    @GetMapping("/search")
+    public String searchUsers(@RequestParam("searchTerm") String searchTerm, Model model) {
+        // Realiza la búsqueda de usuarios por nombre
+        List<User> searchResults = userRepository.findByNombreContainingIgnoreCase(searchTerm);
+        model.addAttribute("searchResults", searchResults);
+        model.addAttribute("searchTerm", searchTerm);
+
+        return "user/list"; // Nombre del archivo HTML en la carpeta de templates
+    }
+
 
 }

@@ -18,9 +18,6 @@ public class PhotoDTO {
     @Size(max = 255)
     private String photoUrl;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private OffsetDateTime createdAt;
-
     private Integer user;
 
 }

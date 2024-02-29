@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Detalle de la Foto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h2>Detalle de la Foto</h2>
+        <div class="card" style="width: 18rem;">
+            <img th:src="${photo.getPhotoUrl()}" class="card-img-top" alt="Foto">
+            <div class="card-body">
+                <a th:href="@{'/users/profile/' + ${photo.getUser().getId()}}">
+                    <h5 class="card-title" th:text="${photo.getUser().getNombre()}">Título de la Foto</h5>
+                </a>
+                <p class="card-text"><small class="text-muted" th:text="${#dates.format(photo.getConvertedDateCreated(), 'dd/MM/yyyy')}">Fecha de Subida</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package io.bootify.social_pet.user.domain;
 
 import io.bootify.social_pet.photo.domain.Photo;
+import io.bootify.social_pet.util.WebAdvice;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(unique = true, length = 100)
     private String email;
 
     @Column(nullable = false, length = 100)

@@ -19,7 +19,6 @@
                         <tr>
                             <th scope="col">[[#{photo.id.label}]]</th>
                             <th scope="col">[[#{photo.photoUrl.label}]]</th>
-                            <th scope="col">[[#{photo.createdAt.label}]]</th>
                             <th scope="col">[[#{photo.user.label}]]</th>
                             <th><!-- --></th>
                         </tr>
@@ -28,7 +27,6 @@
                         <tr th:each="photo : ${photos}">
                             <td>[[${photo.id}]]</td>
                             <td>[[${photo.photoUrl}]]</td>
-                            <td>[[${photo.createdAt}]]</td>
                             <td>[[${photo.user}]]</td>
                             <td>
                                 <div class="float-end text-nowrap">

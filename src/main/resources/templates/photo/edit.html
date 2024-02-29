@@ -16,7 +16,6 @@
             <form th:action="${requestUri}" method="post">
                 <div th:replace="~{fragments/forms::inputRow(object='photo', field='id', disabled=true, type='number')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='photo', field='photoUrl', required=true)}" />
-                <div th:replace="~{fragments/forms::inputRow(object='photo', field='createdAt')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='photo', field='user', type='select')}" />
                 <input type="submit" th:value="#{photo.edit.headline}" class="btn btn-primary mt-4" />
             </form>

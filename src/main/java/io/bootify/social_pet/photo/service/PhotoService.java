@@ -56,14 +56,12 @@ public class PhotoService {
     private PhotoDTO mapToDTO(final Photo photo, final PhotoDTO photoDTO) {
         photoDTO.setId(photo.getId());
         photoDTO.setPhotoUrl(photo.getPhotoUrl());
-        photoDTO.setCreatedAt(photo.getCreatedAt());
         photoDTO.setUser(photo.getUser() == null ? null : photo.getUser().getId());
         return photoDTO;
     }
 
     private Photo mapToEntity(final PhotoDTO photoDTO, final Photo photo) {
         photo.setPhotoUrl(photoDTO.getPhotoUrl());
-        photo.setCreatedAt(photoDTO.getCreatedAt());
         final User user = photoDTO.getUser() == null ? null : userRepository.findById(photoDTO.getUser())
                 .orElseThrow(() -> new NotFoundException("user not found"));
         photo.setUser(user);

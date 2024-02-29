@@ -16,7 +16,7 @@
         <header class="bg-light">
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md">
-                    <a th:href="@{/}" class="navbar-brand">
+                    <a th:href="@{/users/feed}" class="navbar-brand">
                         <img th:src="@{/images/logo.png}" th:alt="#{app.title}" width="30" height="30" class="d-inline-block align-top">
                         <span class="ps-1">[[#{app.title}]]</span>
                     </a>
@@ -24,6 +24,28 @@
                             th:aria-label="#{navigation.toggle}" aria-controls="navbarToggle" aria-expanded="false">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+                    <div th:if="${session.usuarioLogueado}" class="collapse navbar-collapse" id="navbarToggle">
+                        <form class="d-flex ms-auto me-auto" th:action="@{/users/search}" method="get">
+                            <input class="form-control me-2" type="search" placeholder="Buscar usuarios" aria-label="Buscar" name="searchTerm">
+                            <button class="btn btn-outline-success" type="submit">Buscar</button>
+                        </form>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false" th:text="${session.nombre}">
+                                    Usuario
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" th:href="@{/users/profile}">Perfil</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" th:href="@{/users/logout}">Cerrar sesión</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" th:href="@{/photos/add}">Subir Foto</a></li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </header>

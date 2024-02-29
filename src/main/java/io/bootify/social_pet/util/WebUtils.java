@@ -36,5 +36,13 @@ public class WebUtils {
         HttpServletRequest request = getRequest();
         HttpSession session = request.getSession();
         session.setAttribute(usuario, user);
+        session.setAttribute("nombre", user.getNombre());
+        session.setAttribute("id", user.getId());
+    }
+
+    public static void setSessionLogueado(String usuarioLogueado, boolean b) {
+        HttpServletRequest request = getRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute(usuarioLogueado, b);
     }
 }
