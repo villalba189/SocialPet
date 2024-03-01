@@ -79,7 +79,7 @@ public class PhotoController {
         WebUtils.setSession("usuario", userRepository.findById(currentUser.getId()).orElse(null));
 
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("photo.create.success"));
-        return "redirect:/photos";
+        return "redirect:/users/feed";
     }
 
     @GetMapping("/edit/{id}")

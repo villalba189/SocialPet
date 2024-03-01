@@ -10,7 +10,6 @@
                 <div th:each="user : ${searchResults}" class="col-md-4">
                     <a th:href="@{'/users/profile/' + ${user.id}}">
                         <h3 th:text="${user.nombre}">User Name</h3></a>
-
             </div>
         </div>
         </div>

@@ -1,37 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-    <title>User Profile</title>
+    <title th:text="#{profile.title}">User Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <div layout:fragment="content">
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <h2 th:text="${user.nombre}">User Name</h2>
-        </div>
-        <div class="col-md-6">
-            <h3>Followers</h3>
-            <p th:text="'Total Followers: ' + ${user.getFollowerUsers().size()}">Total Followers: 0</p>
-
-            <h3>Followings</h3>
-            <p th:text="'Total Followings: ' + ${user.getFollowedUsers().size()}">Total Followings: 0</p>
-        </div>
-        <div class="col-md-2" th:if="${session.id == user.id}">
-            <a th:href="@{'/users/edit/' + ${user.id}}" class="btn btn-primary">Edit Profile</a>
-        </div>
-        <div class="col-md-2" th:if="${session.id != user.id}">
-
-            <div class="col-md-2" th:if="${isFollowing}">
-                <a th:href="@{'/users/unfollow/' + ${user.id}}" class="btn btn-primary">Dejar de seguir</a>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <h2 th:text="${user.nombre}">User Name</h2>
             </div>
-            <div class="col-md-2" th:if="${!isFollowing}">
-                <a th:href="@{'/users/follow/' + ${user.id}}" class="btn btn-primary">Seguir</a>
+            <div class="col-md-6">
+                <h3 th:text="#{profile.followers.title}">Followers</h3>
+                <p th:text="'#{profile.followers.total} ' + ${user.getFollowerUsers().size()}">Total Followers: 0</p>
+
+                <h3 th:text="#{profile.followings.title}">Followings</h3>
+                <p th:text="'#{profile.followings.total} ' + ${user.getFollowedUsers().size()}">Total Followings: 0</p>
             </div>
-        </div>
-            <h3>Photos</h3>
+            <div class="col-md-2" th:if="${session.id == user.id}">
+                <a th:href="@{'/users/edit/' + ${user.id}}" class="btn btn-primary" th:text="#{profile.edit.button}">Edit Profile</a>
+            </div>
+            <div class="col-md-2" th:if="${session.id != user.id}">
+                <div th:if="${isFollowing}">
+                    <a th:href="@{'/users/unfollow/' + ${user.id}}" class="btn btn-primary" th:text="#{profile.unfollow.button}">Unfollow</a>
+                </div>
+                <div th:if="${!isFollowing}">
+                    <a th:href="@{'/users/follow/' + ${user.id}}" class="btn btn-primary" th:text="#{profile.follow.button}">Follow</a>
+                </div>
+            </div>
+            <h3 th:text="#{profile.photos.title}">Photos</h3>
             <div class="row">
                 <div class="col-md-4" th:each="photo : ${user.userPhotos}">
                     <a th:href="@{'/photos/'+ ${photo.id}}">
@@ -41,7 +39,6 @@ layout:decorate="~{layout}">
             </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>
