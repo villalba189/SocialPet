@@ -1,18 +1,26 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
-    <head>
-        <title th:text="#{user.list.headline}"></title>
-    </head>
-    <body>
-        <div layout:fragment="content">
-            <div class="d-flex flex-wrap mb-4">
-                <div th:each="user : ${searchResults}" class="col-md-4">
-                    <a th:href="@{'/users/profile/' + ${user.id}}">
-                        <h3 th:text="${user.nombre}">User Name</h3></a>
-                    <p th:text="${user.email}"></p>
-            </div>
-        </div>
-        </div>
-    </body>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{user.list.headline}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <h2 th:text="#{user.list.headline}">Search Results</h2>
+        <ul class="list-group">
+            <li th:each="user : ${searchResults}" class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1" th:text="${user.nombre}">User Name</h5>
+                </div>
+                <p class="mb-1" th:text="${user.email}">User Email</p>
+                <small><a th:href="@{'/users/profile/' + ${user.id}}" class="stretched-link">View Profile</a></small>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>

@@ -46,13 +46,11 @@ public class Photo {
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
+    @Setter
     private String formattedDate;
 
     public Date getConvertedDateCreated() {
         return Date.from(this.dateCreated.toInstant());
     }
 
-    public void setFormattedDate(String formattedDate) {
-        this.formattedDate = formattedDate;
-    }
 }

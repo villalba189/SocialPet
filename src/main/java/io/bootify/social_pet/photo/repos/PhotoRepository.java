@@ -14,7 +14,5 @@ public interface PhotoRepository extends JpaRepository<Photo, Integer> {
 
     List<Photo> findPhotosByUserId(Integer Id);
 
-    List<Photo> findAllByUserIdInOrderByDateCreatedDesc(Set<Integer> followedUserIds);
-
     List<Photo> findAllPhotosByUserIdInOrderByDateCreatedDesc(Set<Integer> followedUserIds);
 }
