@@ -9,7 +9,7 @@
             <div class="d-flex flex-wrap mb-4">
                 <h1 class="flex-grow-1" th:text="#{photo.add.headline}"></h1>
                 <div>
-                    <a th:href="@{/photos}" class="btn btn-secondary" th:text="#{photo.add.back}"></a>
+                    <a th:href="@{/users/feed}" class="btn btn-secondary" th:text="#{photo.add.back}"></a>
                 </div>
             </div>
             <div th:replace="~{fragments/forms::globalErrors('photo')}" />
