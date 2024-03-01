@@ -1,28 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
     <title th:text="#{user.feed.headline}">Feed</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px; /* Espacio entre tarjetas */
+        }
+        .card-img-top {
+            max-height: 400px; /* Altura máxima de la imagen */
+            object-fit: cover; /* Asegura que la imagen cubra el área sin perder su aspecto */
+            width: 100%; /* Asegura que la imagen cubra el ancho de la tarjeta */
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column; /* Orientación vertical de los elementos dentro del cuerpo de la tarjeta */
+        }
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            margin-top: auto; /* Empuja el botón hacia abajo */
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
-<div class="container mt-5">
-    <div class="row">
-
-        <div th:each="user : ${followedUsers}"class="col-md-4">
-            <div>
-                <div class="col-md-4" th:each="photo : ${user.userPhotos}">
-                    <a th:href="@{'/users/profile/' + ${user.id}}">
-                        <h3 th:text="${user.nombre}">User Name</h3></a>
-                    <a th:href="@{'/photos/'+ ${photo.id}}">
-                        <img th:src="${photo.getPhotoUrl()}" class="img-fluid" alt="User Photo">
-                    </a>
+    <div class="container mt-5">
+        <div class="d-flex flex-column align-items-center"> <!-- Centrado y orientación vertical -->
+            <div th:each="photo : ${photos}" class="col-md-8"> <!-- Ancho de las tarjetas ajustado para ser uniforme -->
+                <div class="card">
+                    <img th:src="${photo.photoUrl}" class="card-img-top" alt="Photo">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${photo.user.nombre}">Nombre del Usuario</h5>
+                        <p class="card-text"><small class="text-muted" th:text="${photo.formattedDate}">Fecha de Subida</small></p>
+                        <a th:href="@{'/users/profile/' + ${photo.user.id}}" class="btn btn-primary">Ver perfil</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

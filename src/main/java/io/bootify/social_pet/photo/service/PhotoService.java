@@ -7,6 +7,8 @@ import io.bootify.social_pet.user.domain.User;
 import io.bootify.social_pet.user.repos.UserRepository;
 import io.bootify.social_pet.util.NotFoundException;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +72,9 @@ public class PhotoService {
 
     public List<Photo> findPhotosByUserId(Integer userId) {
         return photoRepository.findPhotosByUserId(userId);
+    }
+
+    public List<Photo> findAllPhotosByUserIdInOrderByDateCreatedDesc(Set<Integer> followedUserIds) {
+        return photoRepository.findAllPhotosByUserIdInOrderByDateCreatedDesc(followedUserIds);
     }
 }

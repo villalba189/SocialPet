@@ -9,6 +9,7 @@ import io.bootify.social_pet.user.service.UserService;
 import io.bootify.social_pet.util.CustomCollectors;
 import io.bootify.social_pet.util.ReferencedWarning;
 import io.bootify.social_pet.util.WebUtils;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +23,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
@@ -162,19 +165,34 @@ public class UserController {
     }
 
     @GetMapping("/feed")
-    public String Feed(Model model) {
-        User user = (User) WebUtils.getRequest().getSession().getAttribute("usuario");
-        if (user != null) {
-            Set<User> followedUsers = user.getFollowedUsers();
+    public String feed(Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("usuario");
+        if (currentUser != null) {
+            // Obtener los IDs de los usuarios seguidos
+            Set<Integer> followedUserIds = currentUser.getFollowedUsers().stream()
+                    .map(User::getId)
+                    .collect(Collectors.toSet());
 
-            model.addAttribute("followedUsers", followedUsers);
-            log.info("Displaying feed for user with id: {}", user.getId());
+            // Incluir también el ID del usuario actual si quieres mostrar sus fotos
+            followedUserIds.add(currentUser.getId());
+
+            // Ajusta este método para buscar fotos por una lista de IDs de usuarios
+            List<Photo> photos = photoService.findAllPhotosByUserIdInOrderByDateCreatedDesc(followedUserIds);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
+            photos.forEach(photo -> {
+                String formattedDate = photo.getDateCreated().format(formatter);
+                photo.setFormattedDate(formattedDate); // Asegúrate de que Photo tiene un campo para almacenar la fecha formateada
+            });
+
+            model.addAttribute("photos", photos);
             return "user/feed";
         } else {
-            log.warn("User not found in session");
             return "redirect:/login";
         }
     }
+
+
 
     @GetMapping("/logout")
     public String logout() {
@@ -200,6 +218,25 @@ public class UserController {
             return "redirect:/ruta-de-fallo"; // Modifica según tu lógica de aplicación
         }
     }
+
+    @GetMapping("/unfollow/{userIdToUnfollow}")
+    public String unfollowUser(@PathVariable("userIdToUnfollow") Integer userIdToUnfollow) {
+        log.info("Attempting to unfollow user with id: {}", userIdToUnfollow);
+        Integer currentUserId = (Integer) WebUtils.getRequest().getSession().getAttribute("id");
+
+        boolean success = userService.unfollowUser(currentUserId, userIdToUnfollow);
+        WebUtils.setSession("usuario", userRepository.findById(currentUserId).orElse(null));
+
+        if (success) {
+            log.info("User with id: {} unfollowed successfully", userIdToUnfollow);
+            return "redirect:/users/profile/" + userIdToUnfollow;
+        } else {
+            log.warn("Failed to unfollow user with id: {}", userIdToUnfollow);
+            return "redirect:/ruta-de-fallo"; // Modifica según tu lógica de aplicación
+        }
+    }
+
+
     @GetMapping("/search")
     public String searchUsers(@RequestParam("searchTerm") String searchTerm, Model model) {
         log.info("Searching users with term: {}", searchTerm);

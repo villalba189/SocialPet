@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 <head>
-    <title th:text="#{photo.view.headline}"></title>
+    <title th:text="#{photo.view.headline}">Photo View</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .photo-view-container {
+            max-width: 540px;
+            margin: auto;
+        }
+        .photo-img {
+            max-height: 400px;
+            width: auto;
+            display: block;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="container mt-5">
-        <h2 th:text="#{photo.view.details}"></h2>
-        <div class="card" style="width: 18rem;">
-            <img th:src="${photo.getPhotoUrl()}" class="card-img-top" alt="Foto">
-            <div class="card-body">
-                <a th:href="@{'/users/profile/' + ${photo.getUser().getId()}}">
-                    <h5 class="card-title" th:text="${photo.getUser().getNombre()}">[[#{photo.user.label}]]</h5>
+        <div class="photo-view-container">
+            <img th:src="${photo.getPhotoUrl()}" class="card-img-top photo-img" alt="Photo" />
+            <div class="card-body text-center">
+                <a th:href="@{'/users/profile/' + ${photo.getUser().getId()}}" class="card-link">
+                    <h5 class="card-title" th:text="${photo.getUser().getNombre()}">User Name</h5>
                 </a>
-                <p class="card-text"><small class="text-muted" th:text="${#dates.format(photo.getConvertedDateCreated(), 'dd/MM/yyyy')}">Fecha de Subida</small></p>
+                <p class="card-text">
+                    <small class="text-muted" th:text="${#dates.format(photo.getConvertedDateCreated(), 'dd/MM/yyyy')}">Upload Date</small>
+                </p>
             </div>
         </div>
     </div>
