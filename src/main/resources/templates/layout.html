@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title th:text="${app.title} + ' | ' + #{app.layout.title}">App Title</title>
+    <title th:text="${app.title}">App Title</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -53,4 +53,9 @@
         <p th:if="${MSG_SUCCESS}" class="alert alert-success mb-4" th:text="${MSG_SUCCESS}">Success Message</p>
         <p th:if="${MSG_INFO}" class="alert alert-info mb-4" th:text="${MSG_INFO}">Info Message</p>
         <p th:if="${MSG_ERROR}" class="alert alert-danger mb-4" th:text="${MSG_ERROR}">Error Message</p>
-        <
+        <div layout:fragment="content"></div>
+    </div>
+</main>
+</body>
+</html>
+```
