@@ -13,10 +13,10 @@
             </div>
             <div class="col-md-6">
                 <h3 th:text="#{profile.followers.title}">Followers</h3>
-                <p th:text="'#{profile.followers.total} ' + ${user.getFollowerUsers().size()}">Total Followers: 0</p>
+                <p th:text="${user.getFollowerUsers().size()}"> 0</p>
 
                 <h3 th:text="#{profile.followings.title}">Followings</h3>
-                <p th:text="'#{profile.followings.total} ' + ${user.getFollowedUsers().size()}">Total Followings: 0</p>
+                <p th:text=" ${user.getFollowedUsers().size()}"> 0</p>
             </div>
             <div class="col-md-2" th:if="${session.id == user.id}">
                 <a th:href="@{'/users/edit/' + ${user.id}}" class="btn btn-primary" th:text="#{profile.edit.button}">Edit Profile</a>
