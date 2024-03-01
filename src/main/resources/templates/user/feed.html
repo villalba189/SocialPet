@@ -36,7 +36,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${photo.user.nombre}">Nombre del Usuario</h5>
                         <p class="card-text"><small class="text-muted" th:text="${photo.formattedDate}">Fecha de Subida</small></p>
-                        <a th:href="@{'/users/profile/' + ${photo.user.id}}" class="btn btn-primary">Ver perfil</a>
+                        <a th:href="@{'/users/profile/' + ${photo.user.id}}" class="btn btn-primary" th:text="#{view.profile}">Ver perfil</a>
                     </div>
                 </div>
             </div>

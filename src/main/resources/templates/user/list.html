@@ -14,7 +14,7 @@
                     <h5 class="mb-1" th:text="${user.nombre}">User Name</h5>
                 </div>
                 <p class="mb-1" th:text="${user.email}">User Email</p>
-                <small><a th:href="@{'/users/profile/' + ${user.id}}" class="stretched-link">View Profile</a></small>
+                <small><a th:href="@{'/users/profile/' + ${user.id}}" class="stretched-link" th:text="#{view.profile}">View Profile</a></small>
             </li>
         </ul>
     </div>
