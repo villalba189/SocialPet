@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout}">
     <head>
-        <title>[[#{photo.edit.headline}]]</title>
+        <title th:text="#{photo.edit.headline}"></title>
     </head>
     <body>
         <div layout:fragment="content">
             <div class="d-flex flex-wrap mb-4">
-                <h1 class="flex-grow-1">[[#{photo.edit.headline}]]</h1>
+                <h1 class="flex-grow-1" th:text="#{photo.edit.headline}"></h1>
                 <div>
-                    <a th:href="@{/photos}" class="btn btn-secondary">[[#{photo.edit.back}]]</a>
+                    <a th:href="@{/photos}" class="btn btn-secondary" th:text="#{photo.edit.back}"></a>
                 </div>
             </div>
             <div th:replace="~{fragments/forms::globalErrors('photo')}" />

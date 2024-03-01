@@ -1,46 +1,42 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
-    <head>
-        <title>[[#{photo.list.headline}]]</title>
-    </head>
-    <body>
-        <div layout:fragment="content">
-            <div class="d-flex flex-wrap mb-4">
-                <h1 class="flex-grow-1">[[#{photo.list.headline}]]</h1>
-                <div>
-                    <a th:href="@{/photos/add}" class="btn btn-primary ms-2">[[#{photo.list.createNew}]]</a>
-                </div>
-            </div>
-            <div th:if="${photos.empty}">[[#{photo.list.empty}]]</div>
-            <div th:if="${!photos.empty}" class="table-responsive">
-                <table class="table table-striped table-hover align-middle">
-                    <thead>
-                        <tr>
-                            <th scope="col">[[#{photo.id.label}]]</th>
-                            <th scope="col">[[#{photo.photoUrl.label}]]</th>
-                            <th scope="col">[[#{photo.user.label}]]</th>
-                            <th><!-- --></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="photo : ${photos}">
-                            <td>[[${photo.id}]]</td>
-                            <td>[[${photo.photoUrl}]]</td>
-                            <td>[[${photo.user}]]</td>
-                            <td>
-                                <div class="float-end text-nowrap">
-                                    <a th:href="@{/photos/edit/{id}(id=${photo.id})}" class="btn btn-sm btn-secondary">[[#{photo.list.edit}]]</a>
-                                    <form th:action="@{/photos/delete/{id}(id=${photo.id})}"
-                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
-                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{photo.list.delete}]]</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{photo.list.headline}">List of Photos</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 th:text="#{photo.list.headline}">List of Photos</h1>
+            <a th:href="@{/photos/add}" class="btn btn-primary" th:text="#{photo.list.createNew}">Add New Photo</a>
         </div>
-    </body>
+        <div th:if="${photos.empty}" class="alert alert-info" th:text="#{photo.list.empty}">No photos available</div>
+        <div th:if="${!photos.empty}" class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col" th:text="#{photo.id.label}">ID</th>
+                    <th scope="col" th:text="#{photo.photoUrl.label}">Photo URL</th>
+                    <th scope="col" th:text="#{photo.user.label}">User</th>
+                    <th scope="col" th:text="#{actions}">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="photo : ${photos}">
+                    <td th:text="${photo.id}"></td>
+                    <td th:text="${photo.photoUrl}"></td>
+                    <td th:text="${photo.user}"></td>
+                    <td>
+                        <a th:href="@{/photos/edit/{id}(id=${photo.id})}" class="btn btn-sm btn-warning" th:text="#{photo.list.edit}">Edit</a>
+                        <form th:action="@{/photos/delete/{id}(id=${photo.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger" th:text="#{photo.list.delete}">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
 </html>

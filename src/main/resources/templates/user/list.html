@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout}">
     <head>
-        <title>[[#{user.list.headline}]]</title>
+        <title th:text="#{user.list.headline}"></title>
     </head>
     <body>
         <div layout:fragment="content">

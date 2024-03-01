@@ -1,13 +1,21 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
-    <head>
-        <title>[[${status}]] - [[${error}]]</title>
-    </head>
-    <body>
-        <div layout:fragment="content">
-            <h1 class="mb-4">[[${status}]] - [[${error}]]</h1>
-            <p>[[#{error.message}]]</p>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="${status} + ' - ' + ${error}">Error</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h1 class="display-1" th:text="${status}">Error Code</h1>
+                <p class="lead" th:text="${error}">Error Message</p>
+                <p th:text="${message} ?: #{error.defaultMessage}">Detailed error message.</p>
+                <a th:href="@{/}" class="btn btn-primary">Go Home</a>
+            </div>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>
