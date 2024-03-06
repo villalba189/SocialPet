@@ -34,7 +34,7 @@ public class LoginController {
     }
 
     @PostMapping()
-    public String login(@RequestParam("email") String email, @RequestParam("contrasea") String contrasea, Model model, RedirectAttributes redirectAttributes) {
+    public String login(@RequestParam("email") String email, @RequestParam("contrasea") String contrasea, RedirectAttributes redirectAttributes) {
         log.info("Handling POST request for /login");
         Optional<User> usuarioOpt = userRepository.findByEmail(email);
 
@@ -47,7 +47,7 @@ public class LoginController {
         } else {
             // Usuario no encontrado o contraseña no coincide, mostrar error
             log.warn("Failed login attempt for user: {}", email);
-            model.addAttribute("loginError", "Error en las credenciales");
+            redirectAttributes.addFlashAttribute("loginError", "Error en las credenciales");
             return "redirect:/login";
         }
     }

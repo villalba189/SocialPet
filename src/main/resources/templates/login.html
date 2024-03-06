@@ -24,6 +24,9 @@
             <p th:text="#{register.title}">¿No tienes cuenta? </p>
             <a th:href="@{/users/add}" th:text="#{register.button}">Regístrate</a>
         </div>
+        <div th:if="${loginError}" class="alert alert-danger mt-2">
+            <p th:text="${loginError}"></p>
+        </div>
     </form>
 </div>
 </body>
